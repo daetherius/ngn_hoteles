@@ -3,8 +3,8 @@ echo
 	$this->element('adminhdr',array('links'=>array('back'))),
 	$this->element('inputs',array('schema'=>array(
 		'room_id'=>array('type'=>'hidden','value'=>$this->params['named']['room_id']),
-		'fecha_inicio'=>array('div'=>'col col50'),
-		'fecha_fin'=>array('div'=>'col col50'),
+		'inicio'=>array('div'=>'col col50'),
+		'fin'=>array('div'=>'col col50'),
 		'sencilla'=>array('div'=>'col col16'),
 		'doble'=>array('div'=>'col col16'),
 		'triple'=>array('div'=>'col col16'),

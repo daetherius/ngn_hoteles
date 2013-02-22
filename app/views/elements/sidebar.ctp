@@ -1,14 +1,22 @@
 <div class="sidebar">
 <div class="pad">
 <?php
-if(is_c('inicio',$this)){
-	
-}
-if(is_c('products',$this) && isset($item) && $item){
-	echo $this->element('add2cart',array('data'=>$item));
-}
-
-echo $html->div('banners',$this->element('banners'),array('id'=>'banners')), $moo->showcase('banners',array('nav'=>'out'));
+	echo
+		$form->create(null,array('url'=>$this->here,'id'=>'buscador')),
+			$form->input('destination_id',array('label'=>'Destino')),
+			$form->input('nombre',array('label'=>'Hotel')),
+			$form->input('categoria',array(
+				'label'=>'Categoría',
+				'empty'=>'[Todos]',
+				'options'=>Configure::read('Site.categorias')
+			)),
+			$form->input('inicio',array('label'=>'Fecha de Entrada','dateFormat'=>'DMY','type'=>'date')),
+			$form->input('alimentos',array(
+				'label'=>'Plan de Alimentos',
+				'empty'=>'[Todos]',
+				'options'=>Configure::read('Site.alimentos')
+			)),
+		$form->end('Buscar');
 ?>
 </div>
 </div>

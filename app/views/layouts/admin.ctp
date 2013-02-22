@@ -22,8 +22,7 @@ echo
 			$html->tag('span','Panel de Administración',array('id'=>'title')),
 		'</div>';
 			
-	if(isset($sAdmin) && $sAdmin){
-
+	if(isset($sAdmin) && $sAdmin['master']){
 		echo $html->div('sidebar');
 			$modules = Configure::read('Modules');
 			foreach($modules as $cntrllr => $mod){

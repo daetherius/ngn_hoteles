@@ -2,11 +2,12 @@
 $hasimgs = in_array(strtolower($_m[0]).'imgs',array_keys(Configure::read('Modules')));
 echo
 	$this->element('adminhdr',array(
-		'title'=>'Tarifas - '.$nombre_room,
+		'title'=>$_ts.' - '.$nombre_hotel,
 		'links'=>array(
-			array('text'=>'Regresar','href'=>array('controller'=>'rooms','action'=>'index','admin'=>1,'hotel_id'=>$this->params['named']['hotel_id']),'class'=>'back'),
+			array('text'=>'Regresar','href'=>array('controller'=>'hotels','action'=>'index','admin'=>1),'class'=>'back'),
 			'add'
-		)
+		),
+		'filtro'=>false
 	)),
 	$this->element('pages');
 	
@@ -17,11 +18,8 @@ echo
 		$html->tag('table',null,array('class'=>'datagrid')),
 			$html->tableHeaders(array(
 				$paginator->sort('#', 'id'),
-				//$paginator->sort('Nombre', 'nombre'),
-				$paginator->sort('Plan alimentos', 'plan_alimentos'),
 				$paginator->sort('Inicio', 'inicio'),
 				$paginator->sort('Fin', 'fin'),
-				$paginator->sort('Activo', 'activo'),
 				$paginator->sort('Creado', 'created'),
 				'Acciones'
 			));
@@ -31,11 +29,8 @@ echo
 				
 				echo $html->tableCells(array(array(
 					$form->input($id,array('type'=>'checkbox','div'=>'hide','class'=>'delete')).$html->link($id,'javascript:;',array('class'=>'id','id'=>'it'.$id)),
-					//$it[$_m[0]]['nombre'],
-					$it[$_m[0]]['plan_alimentos'],
-					$it[$_m[0]]['inicio'],
-					$it[$_m[0]]['fin'],
-					$util->toggle($it[$_m[0]]['activo'],$id),
+					$util->fdate('%d / %B / %Y',$it[$_m[0]]['inicio']),
+					$util->fdate('%d / %B / %Y',$it[$_m[0]]['fin']),
 					$util->fdate('s',$it[$_m[0]]['created']),
 					array(
 						$html->link('Editar',array('action'=>'editar','admin'=>1,$id)).

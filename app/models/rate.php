@@ -2,8 +2,8 @@
 class Rate extends AppModel {
 	var $name = 'Rate';
 	var $labels = array(
-		'fecha_inicio'=>'Fecha Inicio',
-		'fecha_fin'=>'Fecha Fin',
+		'inicio'=>'Fecha Inicio',
+		'fin'=>'Fecha Fin',
 		'plan_alimentos'=>'Plan de Alimentos',
 		'cuadruple'=>'Cuádruple',
 		'extra'=>'Persona Extra',

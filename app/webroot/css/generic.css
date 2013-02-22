@@ -119,9 +119,9 @@ div.atclear{ clear:none; }
 .col75 { width:23%; }
 
 .legend { font-size:80%;color:#AAA; }
-.win { border:#A7EDA5 solid 1px; background:#DDFFDE;padding:4px 10px; }
-.warning { border:#FFDC93 solid 1px; background:#FFFDDD;padding:4px 10px; }
-.fail { border:#FFA08F solid 1px; background:#FFE9E5;padding:4px 10px; }
+.win { border:#A7EDA5 solid 1px !important; background:#DDFFDE !important;padding:4px 10px; }
+.warning { border:#FFDC93 solid 1px !important; background:#FFFDDD !important;padding:4px 10px; }
+.fail { border:#FFA08F solid 1px !important; background:#FFE9E5 !important;padding:4px 10px; }
 
 .invalidForm {
 	padding:8px 10px 8px 31px;

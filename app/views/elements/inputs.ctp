@@ -8,6 +8,21 @@
 
 	App::import('Model',$model);
 	$m = new $model();
+
+	$mergeSchema = array();
+	$afterOf = array(); /// Para reordenamiento
+	
+	$prevKey = false;
+	if(!empty($schema)){
+		foreach ($schema as $key => $value) {
+			if(is_numeric($key) && $prevKey){
+				$afterOf[$prevKey][] = $value;
+				unset($schema[$key]);
+			}
+			$prevKey = $key;
+		}
+	}
+
 	$mergeSchema = isset($schema) && $schema ? Set::normalize($schema) : array();
 	$_schema = Set::normalize(array_keys($m->_schema));
 
@@ -18,7 +33,6 @@
 	$formtag = isset($formtag) ? $formtag : true;
 	$before = isset($before) && $before ? $before : false;
 	$after = isset($after) && $after ? $after : false;
-	$afterOf = array(); /// Para reordenamiento
 	$inpQueue = array();
 	$fileFields = false;
 	$habtms = false;
@@ -248,7 +262,8 @@
 		}
 		
 		// Tags
-		if($habtms = array_keys($m->hasAndBelongsToMany)){
+		$habtms = array_keys($m->hasAndBelongsToMany);
+		if($habtms && in_array('Tag',$habtms)){
 			foreach($habtms as $habtm){
 				$modules = Configure::read('Modules');
 				$label = isset($modules[Inflector::tableize($habtm)]['label']) && $modules[Inflector::tableize($habtm)]['label'] ? $modules[Inflector::tableize($habtm)]['label'].': ' : '';
@@ -258,7 +273,6 @@
 					'div'=>'cuteCheckbox',
 					'between'=>$this->element('admin_tags',array('model'=>$habtm))
 				);
-				
 			}
 		}
 
@@ -289,13 +303,17 @@
 
 	/// Combina $mergeSchema con $_schema
 	foreach($mergeSchema as $fieldName => $fieldData){
-		$mergeSchema[$fieldName] = (array)$fieldData; /// Forzamos array
+		if(empty($fieldData)){
+			$mergeSchema[$fieldName] = $fieldData;
+		} else {
+			$mergeSchema[$fieldName] = (array)$fieldData; /// Forzamos array
 
-		if(!isset($_schema[$fieldName]))
-			$_schema[$fieldName] = array();
+			if(!isset($_schema[$fieldName]))
+				$_schema[$fieldName] = array();
 
-		$_schema[$fieldName] = array_merge((array)$_schema[$fieldName],$mergeSchema[$fieldName]);
-	}
+			$_schema[$fieldName] = array_merge((array)$_schema[$fieldName],$mergeSchema[$fieldName]);
+		}
+	} fb($mergeSchema,'$mergeSchema');
 
 	/// Post merge
 	$hasActivo = false;

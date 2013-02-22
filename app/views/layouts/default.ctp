@@ -27,7 +27,6 @@
 echo
 	$html->tag('body',null,'c_'.$this->params['controller'].' a_'.$this->params['action']),
 		$html->div(null,null,array('id'=>'nofooter')),
-			$this->element('cart'),
 			$html->div(null,null,array('id'=>'header')),
 				$html->div('clear'),
 					$html->tag('h1',$html->link($sitename_for_layout,'/',array('title'=>$sitename_for_layout)),array('id'=>'logo')),
@@ -45,15 +44,6 @@ echo
 <?php
 	echo
 		$html->script(array('moo13m','utils','pulsembox')),
-//*
-		$moo->addEvent('.add2cart input[type=submit]','click',array(
-			'css'=>true,
-			'prevent'=>true,
-			'url'=>'/products/add2cart',
-			'data'=>'this.getParent("form")',
-			'spinner'=>'this.getParent(".add2cart")'
-		)),
-/**/
 		$scripts_for_layout,
 		$moo->writeBuffer(array('onDomReady'=>false)),
 		//$this->element('gfont',array('fonts'=>array('Cantarell','Droid+Serif'))),

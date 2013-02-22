@@ -32,6 +32,7 @@ function my_url_parser($url,&$obj){
 		$carried = array(
 			'*'=>array('lang'),
 			'rooms'=>array('hotel_id'),
+			'blackouts'=>array('hotel_id'),
 			'rates'=>array('hotel_id','room_id'),
 		);
 		

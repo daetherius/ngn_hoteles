@@ -1,13 +1,7 @@
 <?php
 $hasimgs = in_array(strtolower($_m[0]).'imgs',array_keys(Configure::read('Modules')));
 echo
-	$this->element('adminhdr',array(
-		'title'=>'Tarifas - '.$nombre_room,
-		'links'=>array(
-			array('text'=>'Regresar','href'=>array('controller'=>'rooms','action'=>'index','admin'=>1,'hotel_id'=>$this->params['named']['hotel_id']),'class'=>'back'),
-			'add'
-		)
-	)),
+	$this->element('adminhdr',array('links'=>array('add'))),
 	$this->element('pages');
 	
 	if($items){
@@ -17,10 +11,7 @@ echo
 		$html->tag('table',null,array('class'=>'datagrid')),
 			$html->tableHeaders(array(
 				$paginator->sort('#', 'id'),
-				//$paginator->sort('Nombre', 'nombre'),
-				$paginator->sort('Plan alimentos', 'plan_alimentos'),
-				$paginator->sort('Inicio', 'inicio'),
-				$paginator->sort('Fin', 'fin'),
+				$paginator->sort('Nombre', 'nombre'),
 				$paginator->sort('Activo', 'activo'),
 				$paginator->sort('Creado', 'created'),
 				'Acciones'
@@ -31,13 +22,11 @@ echo
 				
 				echo $html->tableCells(array(array(
 					$form->input($id,array('type'=>'checkbox','div'=>'hide','class'=>'delete')).$html->link($id,'javascript:;',array('class'=>'id','id'=>'it'.$id)),
-					//$it[$_m[0]]['nombre'],
-					$it[$_m[0]]['plan_alimentos'],
-					$it[$_m[0]]['inicio'],
-					$it[$_m[0]]['fin'],
+					$it[$_m[0]]['nombre'],
 					$util->toggle($it[$_m[0]]['activo'],$id),
 					$util->fdate('s',$it[$_m[0]]['created']),
 					array(
+						($hasimgs ? $html->link('Fotos',array('action'=>'images','admin'=>1,$id)):'').
 						$html->link('Editar',array('action'=>'editar','admin'=>1,$id)).
 						$html->link('Eliminar',array('action'=>'eliminar','admin'=>1,$id),null,'¿Seguro que quiere eliminar este elemento?')
 					,array('class'=>'actions'))

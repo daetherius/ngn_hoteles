@@ -21,6 +21,7 @@ class AppModel extends Model {
 			'descripcion'=>'descripción',
 			'layout'=>'disposición',
 			'email'=>'E-Mail',
+			'telefono'=>'Teléfono',
 			'src'=>'archivo'
 		);
 		

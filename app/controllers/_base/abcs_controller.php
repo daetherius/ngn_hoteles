@@ -1,9 +1,8 @@
 <?php
 App::import('Controller','_base/My');
 class AbcsController extends MyController{
-	function admin_index() {
+	function admin_index($find = array()) {
 		$this->paginate[$this->uses[0]]['limit'] = 25;
-		$find = array();
 
 		//// Buscador
 		if($this->data){
@@ -32,7 +31,6 @@ class AbcsController extends MyController{
 			$this->data['q'] = $q;
 		}
 		/////
-		
 		$this->set('items',$this->paginate($this->uses[0],$find));
 		if($this->m[0]->belongsTo){
 			$parentModels = array_keys($this->m[0]->belongsTo);

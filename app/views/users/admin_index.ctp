@@ -28,6 +28,7 @@ echo
 				$it[$_m[0]]['apellidos'],
 				$util->fdate('s',$it[$_m[0]]['created']),
 				array(
+				$html->link('Hoteles',array('controller'=>'users','action'=>'hoteles','admin'=>1,'user_id'=>$id)).
 				$html->link('Editar',array('action'=>'editar','admin'=>1,$id)).
 				$html->link('Eliminar',array('action'=>'eliminar','admin'=>1,$id),null,'¿Seguro que quiere eliminar este elemento?')
 				,array('class'=>'actions'))

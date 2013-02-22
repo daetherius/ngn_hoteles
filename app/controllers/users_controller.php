@@ -5,6 +5,9 @@ class UsersController extends MyController{
 	var $uses = array('User');
 
 	function admin_dashboard(){
+		if(!$this->Session->read('sAdmin.master'))
+			$this->redirect(array('controller'=>'hotels','action'=>'index','admin'=>true),null,true);
+
 		$this->pageTitle = 'Panel de Administración';
 	}
 	function admin_index(){ $this->set('items',$this->paginate($this->uses[0])); }
@@ -14,8 +17,7 @@ class UsersController extends MyController{
 			if($usuario = $this->User->find_(array('contain'=>false,'conditions'=>array('username'=>$this->data['User']['username'])),'first')){
 				if ($usuario['User']['password'] == sha1($this->data['User']['password'])){
 					$this->Session->write('sAdmin', $usuario['User']);
-					$this->redirect('/panel');
-					exit;
+					$this->redirect('/panel',null,true);
 				} else { $this->User->invalidate('password','La contraseña no es correcta.'); }
 			} else { $this->User->invalidate('username','El Nombre de usuario no existe.'); }
 		}
@@ -24,6 +26,52 @@ class UsersController extends MyController{
 	function admin_logout(){
 		$this->Session->delete('sAdmin');
 		$this->redirect('/');
+	}
+
+	function admin_hoteles() {
+		if(empty($this->params['named']['user_id']))
+			$this->redirect(array('action'=>'index','admin'=>true));
+		else
+			$id = (int)$this->params['named']['user_id'];
+
+		$with = $this->User->hasAndBelongsToMany['Hotel']['with'];
+		$this->set(compact('with'));
+
+		if(empty($this->data)){
+			// Bind
+			$this->m[0]->{$with}->bindModel(array('hasOne'=>array(
+				'Hotel'=>array(
+					'className'=>'Hotel',
+					'foreignKey'=>false,
+					'conditions'=>'Hotel.id = '.$with.'.hotel_id',
+					'fields'=>array('id','nombre')
+				)
+			)));
+
+			$orderdata = $this->m[0]->{$with}->find('all',array(
+				'conditions'=>array('user_id'=>$id),
+				'fields'=>array('id','Hotel.id','Hotel.nombre')
+			));
+
+			$this->set(compact('orderdata'));
+
+		} else {
+			$result = true;
+			foreach($this->data['Hotel'] as $idx => $hotel){
+				if(!empty($hotel['id'])){
+					$this->m[0]->{$with}->create(false);
+					$join = array('user_id'=>$id,'hotel_id'=>$hotel['id']);
+
+					if(!empty($this->data[$with][$idx]['id']))
+						$join['id'] = $this->data[$with][$idx]['id'];
+					
+					$result = $result && $this->m[0]->{$with}->save($join);
+				}
+			}
+
+			$this->_flash($result ? 'save_ok':'save_some');
+			$this->redirect(array('admin'=>true,'action'=>'index'));
+		}
 	}
 
 	function admin_agregar() {

@@ -18,11 +18,12 @@ foreach(Configure::read('Modules') as $controller => $mod){
 	Router::connect('/admin/'.$alias.'/:action/*',array('controller'=>$controller,'action'=>':action','admin'=>1));
 }
 
+Router::connect('/',array('controller'=>'inicio','action'=>'index'));
 Router::connect('/registro',array('controller'=>'members','action'=>'registro'));
 Router::connect('/login',array('controller'=>'members','action'=>'login'));
 Router::connect('/logout',array('controller'=>'members','action'=>'logout'));
 
-Router::connect('/', array('controller' => 'users', 'action' => 'dashboard','admin'=>1));
+Router::connect('/panel', array('controller' => 'users', 'action' => 'dashboard','admin'=>1));
 Router::connect('/panel/logout',array('controller'=>'users','action'=>'logout','admin'=>1));
 Router::connect('/panel/login',array('controller'=>'users','action'=>'login','admin'=>1));
 

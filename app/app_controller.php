@@ -30,29 +30,6 @@ class AppController extends Controller {
 		$this->set('siteslogan_for_layout', Configure::read('Site.slogan'));
 		$this->set('sitedomain', Configure::read('Site.domain'));
 		
-		/// Store
-		if(in_array('Cart', $this->components)){
-			$this->Cookie->name = 'cart';
-			$this->Cookie->time =  '1 week';  // or '1 hour'
-			$this->Cookie->path = '/'; 
-			$this->Cookie->domain = '';   
-			$this->Cookie->secure = false;  //i.e. only sent if using secure HTTPS
-			$this->Cookie->key = 'Dekuwr8!eCUt2A+e';
-
-			if(!$cart = $this->Session->read('cart')){
-				if(!$cart = $this->Cookie->read('cart')){
-					$cart = array(
-						'Buyer'=>array('id'=>null,'nombre'=>'Invitado','created'=>date('d-m-Y H:i:s')),
-						'items'=>array()
-					);
-				}
-				
-				$this->Session->write('cart',$cart);
-			}
-
-			$this->set(compact('cart'));
-		}
-		
 		//// CACHE
 		if(strpos($this->action,'admin_')===false){
 			/*
@@ -66,8 +43,6 @@ class AppController extends Controller {
 		}
 			
 		//// Session
-
-
 		$prefixes = Configure::read('Routing.prefixes');
 		
 		foreach($prefixes as $prefix){
@@ -78,6 +53,7 @@ class AppController extends Controller {
 				$sessUser = $this->Session->read($user);
 			}elseif(strpos($_SERVER['SERVER_NAME'],'.')===false){
 				$this->Session->write('sAdmin', $sessUser = array(
+					'id'=>0,
 					'nombre'=>'Pulsem',
 					'apellidos'=>'',
 					'username'=>'pulsem',
@@ -85,7 +61,7 @@ class AppController extends Controller {
 					'master'=>1
 				));
 			}
-			
+
 			$this->set($user,$sessUser);
 
 			if(isset($this->params[$prefix]) && $this->params[$prefix]){ # Si es zona de prefijo
@@ -93,6 +69,7 @@ class AppController extends Controller {
 
 				if($prefix=='admin'){
 					$this->set('highlight',0);
+					$this->check_role($sessUser);
 					
 					if($this->params['action']=='admin_index'){
 						if(isset($this->params['named']['page'])){
@@ -264,6 +241,33 @@ class AppController extends Controller {
 
 	function redirect($url, $status = null, $exit = true){
 		parent::redirect(my_url_parser($url,$this), $status, $exit);
+	}
+
+	function check_role($user){
+		if((!$user['master'])){
+			$GTFO = false;
+			switch(strtolower($this->params['controller'])){
+				case 'hotels':
+					if(!in_array($this->params['action'],array('admin_index','admin_editar','admin_images')))
+						$GTFO = array('action'=>'index','admin'=>true);
+				break;
+				case 'users':
+					if(!in_array($this->params['action'],array('admin_dashboard','admin_login','admin_logout')))
+						$GTFO = true;
+				break;
+				case 'hotelimgs':
+				break;
+				default:
+					$GTFO = true;
+				break;
+			}
+			
+			if($GTFO){
+				if($GTFO === true)
+					$GTFO = '/';
+				$this->redirect($GTFO,null,true);
+			}
+		}
 	}
 }
 ?>

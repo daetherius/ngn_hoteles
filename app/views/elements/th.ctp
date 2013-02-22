@@ -50,11 +50,7 @@ if($item){
 				$th['mas'] = 'Leer más';
 		break;
 		//////////
-		case 'Product':
-			if($shop){
-				$th['precio'] = $html->para('precio',$item[$model]['precio']);
-				//$th[] = $html->link('Agregar al Carro',array('controller'=>'products','action'=>'add2cart',$item[$model]['id']),array('class'=>'add2cart'));
-			}
+		case 'Hotel':
 		break;
 		//////////
 		case 'Album':

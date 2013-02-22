@@ -1,7 +1,7 @@
 <?php
 App::import('Controller','My');
 class ImgsController extends MyController{
-	function admin_portada($id){
+	function admin_portada($id){ 
 		if(!$id = (int)$id) exit;
 		
 		$conds = array();

@@ -21,6 +21,25 @@ $config['Site']['og'] = array(
 	'itemtype'=>'organization' //article
 );
 
+$config['Site']['categorias'] = array(
+	'1 Estrella'=>'1 Estrella',
+	'2 Estrellas'=>'2 Estrellas',
+	'3 Estrellas'=>'3 Estrellas',
+	'4 Estrellas'=>'4 Estrellas',
+	'5 Estrellas'=>'5 Estrellas',
+	'Gran Turismo'=>'Gran Turismo'
+);
+
+$config['Site']['alimentos'] = array(
+	'Desayuno'=>'Desayuno',
+	'Desayuno Completo'=>'Desayuno Completo',
+	'Desayuno Express'=>'Desayuno Express',
+	'Desayuno Americano'=>'Desayuno Americano',
+	'Desayuno Continental'=>'Desayuno Continental',
+	'Desayuno Buffete'=>'Desayuno Buffete',
+	'Todo Incluído'=>'Todo Incluído'
+);
+
 /**
  * Modos de uso:
  * Crea por elemento (nombre de controlador) un array asociativo compuesto de las siguientes claves
@@ -30,9 +49,11 @@ $config['Site']['og'] = array(
  * - admin: Nombre del catálogo en el menú del panel de administración, o si es array: Si tiene 1 elemento indica la clase del botón, o si son 2 elementos, el label y la clase; si no se especifica, lo toma de 'menu', sino de 'label'; especificar a false para omitir
 */
 $modules = array(
+	'regions'=>array('Regiones','singu'=>'Región','admin'=>array('')),
 	'destinations'=>array('Destinos','admin'=>array('')),
 	'hotels'=>array('Hoteles','singu'=>'Hotel','admin'=>array('')),
 		'hotelimgs'=>array('Imágenes','admin'=>false),
+		'blackouts'=>array('admin'=>false),
 	'ips'=>array('Visitantes','admin'=>false),
 	'rates'=>array('Tarifas','admin'=>false),
 	'reservations'=>array('Reservaciones','singu'=>'Reservación','admin'=>array('tags')),
